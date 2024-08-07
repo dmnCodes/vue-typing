@@ -4,41 +4,39 @@ import { withDefaults, defineProps, ref, computed, nextTick, onUnmounted } from 
 // Define props with default values and types
 const props = withDefaults(
   defineProps<{
-    array: string[]
+    sentences: string[]
     minTypeSpeed?: number
     maxTypeSpeed?: number
     eraseSpeed?: number
-    delayBetween?: number
-    intervals?: number
-    start?: number
+    eraseDelay?: number
+    writeDelay?: number
     caret?: string
-    iterations?: number
+    loop?: boolean
   }>(),
   {
     minTypeSpeed: 50,
     maxTypeSpeed: 150,
     eraseSpeed: 100,
-    delayBetween: 2000,
-    intervals: 2,
-    start: 0,
-    caret: 'cursor',
-    iterations: Infinity
+    eraseDelay: 1500,
+    writeDelay: 0,
+    caret: '_',
+    loop: false
   }
 )
 
-const emit = defineEmits(['typed'])
+const emit = defineEmits(['sentence:typed'])
 
 const typeValue = ref('')
 const count = ref(0)
 const typeStatus = ref(false)
-const arrayIndex = ref(0)
+const sentencesIndex = ref(0)
 const charIndex = ref(0)
-let loop = 0
 let typingTimeout: ReturnType<typeof setTimeout>
 let erasingTimeout: ReturnType<typeof setTimeout>
 
 // Computed property for caret class
 const caretClass = computed(() => ({
+  caret: true,
   [props.caret]: true,
   typing: typeStatus.value
 }))
@@ -46,13 +44,13 @@ const caretClass = computed(() => ({
 // Helper function to start typing
 function startTyping() {
   nextTick(() => {
-    typingTimeout = setTimeout(typewriter, props.start)
+    typingTimeout = setTimeout(typewriter, props.writeDelay)
   })
 }
 
 // Main typing function
 function typewriter() {
-  if (charIndex.value < props.array[arrayIndex.value]?.length) {
+  if (charIndex.value < props.sentences[sentencesIndex.value]?.length) {
     typeStatus.value = true // Set typing status to true
     typeCharacter()
   } else {
@@ -62,7 +60,7 @@ function typewriter() {
 
 // Function to type a single character with random speed
 function typeCharacter() {
-  typeValue.value += props.array[arrayIndex.value].charAt(charIndex.value)
+  typeValue.value += props.sentences[sentencesIndex.value].charAt(charIndex.value)
   charIndex.value += 1
   const typingSpeed = randomInterval(props.minTypeSpeed, props.maxTypeSpeed)
   typingTimeout = setTimeout(typewriter, typingSpeed)
@@ -70,16 +68,18 @@ function typeCharacter() {
 
 // Function to handle typing completion
 function handleTypingComplete() {
-  emit('typed', props.array[arrayIndex.value])
-  if (++count.value === props.array.length) {
-    count.value = 0
-    if (props.iterations && ++loop === props.iterations) {
-      typeStatus.value = false
-      return
-    }
+  emit('sentence:typed', props.sentences[sentencesIndex.value])
+  count.value += 1
+  if (!props.loop && count.value === props.sentences.length) {
+    typeStatus.value = false
+    return
   }
-  typeStatus.value = false // Set typing status to false after completing a word
-  erasingTimeout = setTimeout(eraser, props.delayBetween)
+  if (props.loop) {
+    typeStatus.value = false // Set typing status to false after completing a word
+    erasingTimeout = setTimeout(eraser, props.eraseDelay)
+  } else {
+    prepareNextWord()
+  }
 }
 
 // Main erasing function
@@ -95,15 +95,19 @@ function eraser() {
 
 // Function to erase a single character
 function eraseCharacter() {
-  typeValue.value = props.array[arrayIndex.value].substring(0, charIndex.value - 1)
+  typeValue.value = props.sentences[sentencesIndex.value].substring(0, charIndex.value - 1)
   charIndex.value -= 1
   erasingTimeout = setTimeout(eraser, props.eraseSpeed)
 }
 
 // Function to prepare for the next word
 function prepareNextWord() {
-  arrayIndex.value = (arrayIndex.value + 1) % props.array.length
-  typingTimeout = setTimeout(typewriter, props.intervals)
+  sentencesIndex.value = (sentencesIndex.value + 1) % props.sentences.length
+  if (props.loop || sentencesIndex.value > 0) {
+    typeStatus.value = true // Set typing status to true before typing the next word
+    charIndex.value = 0
+    typingTimeout = setTimeout(typewriter, props.writeDelay)
+  }
 }
 
 // Helper function to generate a random interval between min and max
@@ -127,40 +131,27 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="dmn-typing">
-    <slot name="before" />
-    <span class="typed">{{ typeValue }}</span>
-    <span :class="caretClass">&nbsp;</span>
-    <slot name="after" />
+  <div class="dmn-typing" data-id="dmn-typing">
+    <slot name="before" data-id="dmn-typing-before" />
+    <span class="sentence" data-id="dmn-typing-sentence">{{ typeValue }}</span>
+    <span :class="caretClass" data-id="dmn-typing-caret">&nbsp;{{ props.caret }}</span>
+    <slot name="after" data-id="dmn-typing-after" />
   </div>
 </template>
 
 <style>
-.dmn-typing span.cursor {
-  display: inline-block;
-  width: 2px;
-  margin-left: 4px;
-  @apply bg-slate-400;
+.dmn-typing span.caret {
+  color: inherit;
   animation: blink 1s infinite;
 }
 
-.dmn-typing span.underscore {
-  display: inline-flex;
-  width: 10px;
-  height: 1px;
-  align-items: flex-end;
-  @apply bg-slate-400;
-  animation: blink 1s infinite;
-}
-
-.dmn-typing span.typing,
 .dmn-typing span.typing {
   animation: none;
 }
 
 @keyframes blink {
   50% {
-    background-color: transparent;
+    opacity: 0;
   }
 }
 </style>
