@@ -10,8 +10,8 @@ const settings = reactive({
   minTypeSpeed: 50,
   maxTypeSpeed: 150,
   eraseSpeed: 50,
-  eraseDelay: 1500,
-  writeDelay: 100,
+  eraseDelay: 500,
+  writeDelay: 150,
   caret: undefined,
   loop: false,
 })
@@ -50,67 +50,16 @@ watch(
           ' typewriter',
           ' effect!',
         ]"
-        v-model:minTypeSpeed="settings.minTypeSpeed"
-        v-model:maxTypeSpeed="settings.maxTypeSpeed"
-        v-model:eraseSpeed="settings.eraseSpeed"
-        v-model:eraseDelay="settings.eraseDelay"
-        v-model:writeDelay="settings.writeDelay"
-        v-model:caret="settings.caret"
-        v-model:loop="settings.loop"
+        :minTypeSpeed="settings.minTypeSpeed"
+        :maxTypeSpeed="settings.maxTypeSpeed"
+        :eraseSpeed="settings.eraseSpeed"
+        :eraseDelay="settings.eraseDelay"
+        :writeDelay="settings.writeDelay"
+        :caret="settings.caret"
+        :loop="settings.loop"
       />
     </h2>
   </header>
-
-  <div class="container">
-    <div class="settings-grid">
-      <dmnRange
-        v-model="settings.minTypeSpeed"
-        id="minTypeSpeed"
-        :min="50"
-        :max="250"
-        :step="50"
-        :label="`:minTypeSpeed='${settings.minTypeSpeed}'`"
-      />
-
-      <dmnRange
-        v-model="settings.maxTypeSpeed"
-        id="maxTypeSpeed"
-        :min="50"
-        :max="500"
-        :step="50"
-        :label="`:maxTypeSpeed='${settings.maxTypeSpeed}'`"
-      />
-
-      <dmnRange
-        v-model="settings.writeDelay"
-        id="writeDelay"
-        :min="50"
-        :max="3000"
-        :step="50"
-        :label="`:writeDelay='${settings.writeDelay}'`"
-      />
-
-      <dmnRange
-        v-model="settings.eraseSpeed"
-        id="eraseSpeed"
-        :min="50"
-        :max="500"
-        :step="10"
-        :label="`:eraseSpeed='${settings.eraseSpeed}'`"
-      />
-
-      <dmnRange
-        v-model="settings.eraseDelay"
-        id="eraseDelay"
-        :min="50"
-        :max="3000"
-        :step="50"
-        :label="`:eraseDelay='${settings.eraseDelay}'`"
-      />
-
-      <dmnToggle v-model="settings.loop" :label="`:loop='${settings.loop}'`" />
-    </div>
-  </div>
 
   <main>
     <div class="container">
@@ -128,76 +77,149 @@ watch(
         <a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a
         >.
       </p>
+    </div>
 
-      <h3>Dynamic Typing</h3>
-      <VueTyping
-        class="text-sm text-gray-600"
-        :sentences="[
-          'Type out a list of sentences with random typing speed',
-          ' within a specified range.',
-        ]"
-        :writeDelay="800"
-      />
+    <div class="container">
+      <div class="settings-grid">
+        <dmnRange
+          v-model="settings.minTypeSpeed"
+          id="minTypeSpeed"
+          :min="50"
+          :max="250"
+          :step="50"
+          :label="`:minTypeSpeed='${settings.minTypeSpeed}'`"
+        />
 
-      <h3>Erasing</h3>
-      <VueTyping
-        class="text-sm text-gray-600"
-        :sentences="[
-          'Erase sentences after typing, with configurable speed and delay.',
-        ]"
-        :eraseSpeed="25"
-        :eraseDelay="3000"
-        loop
-      />
+        <dmnRange
+          v-model="settings.maxTypeSpeed"
+          id="maxTypeSpeed"
+          :min="50"
+          :max="500"
+          :step="50"
+          :label="`:maxTypeSpeed='${settings.maxTypeSpeed}'`"
+        />
 
-      <h3>Looping</h3>
-      <VueTyping
-        class="text-sm text-gray-600"
-        :sentences="[
-          'Option',
-          'to loop through',
-          'the sentences indefinitely.',
-        ]"
-        loop
-      />
+        <dmnRange
+          v-model="settings.writeDelay"
+          id="writeDelay"
+          :min="50"
+          :max="3000"
+          :step="50"
+          :label="`:writeDelay='${settings.writeDelay}'`"
+        />
 
-      <h3>Customizable Caret</h3>
-      <VueTyping
-        class="text-sm text-gray-600"
-        :sentences="['Customize the caret character and its appearance.']"
-        :caret="'|'"
-      />
+        <dmnRange
+          v-model="settings.eraseDelay"
+          id="eraseDelay"
+          :min="50"
+          :max="3000"
+          :step="50"
+          :label="`:eraseDelay='${settings.eraseDelay}'`"
+        />
 
-      <h3>Event Emission</h3>
-      <VueTyping
-        class="text-sm text-gray-600"
-        :sentences="['Emits an event after typing each sentence.']"
-        @sentence:typed="onSentenceTyped"
-      />
-      <VueTyping
-        v-if="typedSentence"
-        class="text-sm text-gray-600"
-        :sentences="['Useful for triggering additional actions.']"
-        :minTypeSpeed="50"
-        :maxTypeSpeed="50"
-        :caret="''"
-      />
+        <dmnToggle
+          v-model="settings.loop"
+          :label="`:loop='${settings.loop}'`"
+        />
 
-      <h3>Tag and Slots</h3>
-      <VueTyping
-        tag="code"
-        class="text-sm text-gray-600"
-        :sentences="[
-          'npm install @dmnCodes/vue-typing',
-          'yarn add @dmnCodes/vue-typing',
-        ]"
-        :eraseDelay="3000"
-        loop
-      >
-        <template #before>
-          <div class="inline-flex text-green-800 font-bold">me@dmnCodes:</div>
-        </template>
-      </VueTyping>
+        <dmnRange
+          v-if="settings.loop"
+          v-model="settings.eraseSpeed"
+          id="eraseSpeed"
+          :min="10"
+          :max="500"
+          :step="10"
+          :label="`:eraseSpeed='${settings.eraseSpeed}'`"
+        />
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="examples-grid">
+        <div>
+          <h3>Dynamic Typing</h3>
+          <VueTyping
+            class="typing-text"
+            :sentences="[
+              'Type out a list of sentences with random typing speed',
+              ' within a specified range.',
+            ]"
+            :writeDelay="800"
+          />
+        </div>
+
+        <div>
+          <h3>Erasing</h3>
+          <VueTyping
+            class="typing-text"
+            :sentences="[
+              'Erase sentences after typing, with configurable speed and delay.',
+            ]"
+            :eraseSpeed="25"
+            :eraseDelay="3000"
+            loop
+          />
+        </div>
+
+        <div>
+          <h3>Looping</h3>
+          <VueTyping
+            class="typing-text"
+            :sentences="[
+              'Option',
+              'to loop through',
+              'the sentences indefinitely.',
+            ]"
+            loop
+          />
+        </div>
+
+        <div>
+          <h3>Customizable Caret</h3>
+          <VueTyping
+            class="typing-text"
+            :sentences="['Customize the caret character and its appearance.']"
+            :caret="'|'"
+          />
+        </div>
+
+        <div>
+          <h3>Event Emission</h3>
+          <VueTyping
+            class="typing-text"
+            :sentences="['Emits an event after typing each sentence.']"
+            @sentence:typed="onSentenceTyped"
+          />
+          <VueTyping
+            v-if="typedSentence"
+            class="typing-text"
+            :sentences="['Useful for triggering additional actions.']"
+            :minTypeSpeed="50"
+            :maxTypeSpeed="50"
+            :caret="''"
+          />
+        </div>
+
+        <div>
+          <h3>Tag and Slots</h3>
+          <VueTyping
+            tag="code"
+            class="typing-text"
+            :sentences="[
+              'npm install @dmnCodes/vue-typing',
+              'yarn add @dmnCodes/vue-typing',
+            ]"
+            :eraseDelay="3000"
+            loop
+          >
+            <template #before>
+              <div class="inline-flex text-green-800 font-bold">
+                me@dmnCodes:
+              </div>
+            </template>
+          </VueTyping>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -216,13 +238,12 @@ watch(
 
 <style scoped>
 header {
-  @apply grid justify-center items-center bg-gray-900 gap-1 p-4;
-  @apply md:p-12;
+  @apply grid justify-center items-center gap-1 p-4 md:p-12;
+  @apply bg-gray-100 dark:bg-gray-900;
 }
 
 h1 {
-  @apply text-2xl;
-  @apply md:text-4xl text-center text-white;
+  @apply text-center text-2xl md:text-4xl;
   @apply font-bold;
 }
 
@@ -236,39 +257,50 @@ h2 {
 }
 
 h3 {
-  @apply mt-10 mb-1 font-bold text-xl;
+  @apply mt-10 mb-1;
+  @apply font-bold text-xl dark:text-gray-300;
 }
 
 main {
-  @apply text-sm;
+  @apply min-h-screen;
+  @apply py-2 md:py-6 lg:py-8 xl:py-12;
+  @apply text-sm text-gray-600 dark:text-gray-400;
   @apply md:text-base;
-}
-
-.container {
-  @apply max-w-6xl mx-auto px-4 py-6;
+  @apply bg-white dark:bg-gray-800;
 }
 
 footer {
-  @apply flex justify-center items-center bg-gray-100 p-2;
-  @apply text-center text-sm text-gray-900 text-opacity-60;
+  @apply flex justify-center items-center p-4;
+  @apply text-center text-sm text-gray-500;
+  @apply bg-gray-100 dark:bg-gray-900;
 }
-/* main {
-  @apply max-w-5xl;
-  @apply py-10;
-} */
 
 a {
   @apply text-blue-600 hover:text-blue-700;
 }
 
-code {
-  @apply block;
-  @apply text-sm font-mono;
-  @apply bg-gray-100 rounded p-2;
+.container {
+  @apply max-w-6xl mx-auto p-4;
 }
 
 .settings-grid {
   @apply grid grid-cols-2 gap-4;
   @apply md:grid-cols-4;
+}
+
+.examples-grid {
+  @apply grid grid-cols-1 gap-4;
+  @apply md:grid-cols-2;
+}
+
+.typing-text {
+  @apply text-sm;
+}
+
+code {
+  @apply block rounded p-2;
+  @apply text-sm;
+  @apply font-mono;
+  @apply bg-gray-100 dark:bg-gray-900;
 }
 </style>

@@ -5,33 +5,45 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
-
-  build: {
-    lib: {
-      // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'lib/main.js'),
-      name: 'VueTyping',
-      // the proper extensions will be added
-      fileName: 'vue-typing'
+export default defineConfig(({ command, mode }) => {
+  // Common configuration for both library and app
+  const commonConfig = {
+    plugins: [vue()],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
-    rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
-      external: ['vue'],
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          vue: 'Vue'
-        }
-      }
+  }
+
+  // Differentiate between building the library and the app
+  if (command === 'build' && mode === 'lib') {
+    return {
+      ...commonConfig,
+      build: {
+        outDir: 'dist', // Output library build to docs/lib
+        lib: {
+          entry: resolve(__dirname, 'lib/main.js'),
+          name: 'VueTyping',
+          fileName: 'vue-typing',
+        },
+        rollupOptions: {
+          external: ['vue'],
+          output: {
+            globals: {
+              vue: 'Vue',
+            },
+          },
+        },
+      },
+    }
+  } else {
+    return {
+      ...commonConfig,
+      base: process.env.NODE_ENV === 'production' ? '/vue-typing/' : '/',
+      build: {
+        outDir: 'docs', // Output app build to docs
+      },
     }
   }
 })
