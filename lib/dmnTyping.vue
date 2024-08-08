@@ -1,5 +1,12 @@
 <script lang="ts" setup>
-import { withDefaults, defineProps, ref, computed, nextTick, onUnmounted } from 'vue'
+import {
+  withDefaults,
+  defineProps,
+  ref,
+  computed,
+  nextTick,
+  onUnmounted,
+} from 'vue'
 
 // Define props with default values and types
 const props = withDefaults(
@@ -20,8 +27,8 @@ const props = withDefaults(
     eraseDelay: 1500,
     writeDelay: 0,
     caret: '_',
-    loop: false
-  }
+    loop: false,
+  },
 )
 
 const emit = defineEmits(['sentence:typed'])
@@ -37,8 +44,7 @@ let erasingTimeout: ReturnType<typeof setTimeout>
 // Computed property for caret class
 const caretClass = computed(() => ({
   caret: true,
-  [props.caret]: true,
-  typing: typeStatus.value
+  typing: typeStatus.value,
 }))
 
 // Helper function to start typing
@@ -60,7 +66,9 @@ function typewriter() {
 
 // Function to type a single character with random speed
 function typeCharacter() {
-  typeValue.value += props.sentences[sentencesIndex.value].charAt(charIndex.value)
+  typeValue.value += props.sentences[sentencesIndex.value].charAt(
+    charIndex.value,
+  )
   charIndex.value += 1
   const typingSpeed = randomInterval(props.minTypeSpeed, props.maxTypeSpeed)
   typingTimeout = setTimeout(typewriter, typingSpeed)
@@ -95,7 +103,10 @@ function eraser() {
 
 // Function to erase a single character
 function eraseCharacter() {
-  typeValue.value = props.sentences[sentencesIndex.value].substring(0, charIndex.value - 1)
+  typeValue.value = props.sentences[sentencesIndex.value].substring(
+    0,
+    charIndex.value - 1,
+  )
   charIndex.value -= 1
   erasingTimeout = setTimeout(eraser, props.eraseSpeed)
 }
@@ -134,7 +145,9 @@ onUnmounted(() => {
   <div class="dmn-typing" data-id="dmn-typing">
     <slot name="before" data-id="dmn-typing-before" />
     <span class="sentence" data-id="dmn-typing-sentence">{{ typeValue }}</span>
-    <span :class="caretClass" data-id="dmn-typing-caret">&nbsp;{{ props.caret }}</span>
+    <span :class="caretClass" data-id="dmn-typing-caret"
+      >&nbsp;{{ props.caret }}</span
+    >
     <slot name="after" data-id="dmn-typing-after" />
   </div>
 </template>
