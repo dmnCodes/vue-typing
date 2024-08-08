@@ -19,6 +19,7 @@ const props = withDefaults(
     writeDelay?: number
     caret?: string
     loop?: boolean
+    tag?: string
   }>(),
   {
     minTypeSpeed: 50,
@@ -28,6 +29,7 @@ const props = withDefaults(
     writeDelay: 0,
     caret: '_',
     loop: false,
+    tag: 'div',
   },
 )
 
@@ -142,23 +144,23 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="dmn-typing" data-id="dmn-typing">
+  <component :is="tag" class="dmn-typing" data-id="dmn-typing">
     <slot name="before" data-id="dmn-typing-before" />
     <span class="sentence" data-id="dmn-typing-sentence">{{ typeValue }}</span>
-    <span :class="caretClass" data-id="dmn-typing-caret"
-      >&nbsp;{{ props.caret }}</span
-    >
+    <span :class="caretClass" data-id="dmn-typing-caret">{{
+      props.caret
+    }}</span>
     <slot name="after" data-id="dmn-typing-after" />
-  </div>
+  </component>
 </template>
 
 <style>
-.dmn-typing span.caret {
+.dmn-typing .caret {
   color: inherit;
   animation: blink 1s infinite;
 }
 
-.dmn-typing span.typing {
+.dmn-typing .typing {
   animation: none;
 }
 
