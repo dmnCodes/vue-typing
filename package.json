@@ -1,6 +1,7 @@
 {
-  "name": "@dmnCodes/vue-typing",
-  "version": "1.0.3",
+  "name": "@dmncodes/vue-typing",
+  "version": "1.0.2",
+  "private": false,
   "type": "module",
   "files": [
     "dist"
@@ -13,6 +14,14 @@
       "require": "./dist/vue-typing.umd.cjs"
     }
   },
+  "keywords": [
+    "vue", 
+    "typing", 
+    "typewriter", 
+    "typewriter-effect", 
+    "typing-effect"
+  ],
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build:lib": "vite build --mode lib",
