@@ -63,7 +63,7 @@ watch(
 
   <main>
     <div class="container">
-      <h3 class="block font-bold !text-4xl">Settings</h3>
+      <h3 class="block font-bold !mb-12 !text-4xl">Settings</h3>
 
       <div class="settings-grid">
         <dmnRange
@@ -287,7 +287,7 @@ a {
 .settings-grid {
   @apply grid grid-cols-2 gap-4;
   @apply md:grid-cols-4;
-  @apply md:my-12;
+  @apply md:mb-12;
 }
 
 .examples-grid {
