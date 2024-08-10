@@ -63,23 +63,8 @@ watch(
 
   <main>
     <div class="container">
-      <p>
-        This <a href="https://vuejs.org/" target="_blank">Vue.js</a> component
-        simulates a realistic typewriter effect by typing and erasing sentences
-        with customizable typing speed, delay, caret style, and looping options.
-        The component is built with the
-        <a
-          href="https://vuejs.org/guide/extras/composition-api-faq.html"
-          target="_blank"
-          >Vue 3 Composition API</a
-        >
-        and
-        <a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a
-        >.
-      </p>
-    </div>
+      <h3 class="block font-bold !text-4xl">Settings</h3>
 
-    <div class="container">
       <div class="settings-grid">
         <dmnRange
           v-model="settings.minTypeSpeed"
@@ -135,6 +120,22 @@ watch(
     </div>
 
     <div class="container">
+      <h3 class="block !mb-12 font-bold !text-4xl">Examples</h3>
+      <p>
+        This <a href="https://vuejs.org/" target="_blank">Vue.js</a> component
+        simulates a realistic typewriter effect by typing and erasing sentences
+        with customizable typing speed, delay, caret style, and looping options.
+        The component is built with the
+        <a
+          href="https://vuejs.org/guide/extras/composition-api-faq.html"
+          target="_blank"
+          >Vue 3 Composition API</a
+        >
+        and
+        <a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a
+        >.
+      </p>
+      
       <div class="examples-grid">
         <div>
           <h3>Dynamic Typing</h3>
@@ -286,6 +287,7 @@ a {
 .settings-grid {
   @apply grid grid-cols-2 gap-4;
   @apply md:grid-cols-4;
+  @apply md:my-12;
 }
 
 .examples-grid {
