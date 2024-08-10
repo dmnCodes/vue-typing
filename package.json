@@ -1,7 +1,7 @@
 {
   "name": "@dmnCodes/vue-typing",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "type": "module",
   "files": [
     "dist"
