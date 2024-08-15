@@ -44,7 +44,7 @@ import VueTyping from "@dmncodes/vue-typing"
 
 ```javascript
 <template>
-  <Typewriter 
+  <VueTyping 
     :sentences="['Hello World!', 'Welcome to Vue.js']"
     :minTypeSpeed="50"
     :maxTypeSpeed="150"
