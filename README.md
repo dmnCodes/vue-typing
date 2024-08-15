@@ -19,15 +19,28 @@ This [Vue](https://vuejs.org/) component simulates a typewriter effect by typing
 Here’s how you can use the Typewriter component in your Vue application:
 
 
-### 1. Import the Component
-You can import the component into your Vue component:
+### 1. Install
 
-```javascript
-import VueTyping from "@dmnCodes/vue-typing"
+With NPM Package Manager
+```bash
+npm i @dmncodes/vue-typing
+```
+
+With Yarn
+```bash
+yarn add @dmncodes/vue-typing
 ```
 
 
-### 2. Use the Component in Your Template
+### 2. Import the Component
+You can import the component into your Vue component:
+
+```javascript
+import VueTyping from "@dmncodes/vue-typing"
+```
+
+
+### 3. Use the Component in Your Template
 
 ```javascript
 <template>
@@ -51,7 +64,7 @@ function onSentenceTyped(sentence: string) {
 </script>
 ```
 
-### 3. Props
+### 4. Props
 
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
@@ -65,13 +78,13 @@ function onSentenceTyped(sentence: string) {
 | loop | boolean | false | Whether to loop through the sentences indefinitely. |
 
 
-### 4. Events
+### 5. Events
 | Event Name | Payload | Description |
 | ---------- | ------- | ----------- |
 | sentence:typed | string (sentence) | Emitted after a sentence is fully typed out. |
 
 
-### 5. Styling
+### 6. Styling
 The component comes with some basic styles for the caret and typing animations. You can customize these styles by overriding the CSS classes:
 
 ```css
@@ -91,7 +104,7 @@ The component comes with some basic styles for the caret and typing animations. 
 }
 ```
 
-### 6. Testing
+### 7. Testing
 Unit tests are written using Vitest and Vue Test Utils. The tests cover:
 
 * Typing the sentences correctly.
