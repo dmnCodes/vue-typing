@@ -1,6 +1,6 @@
 # Vue Typewriter Component
 
-This [Vue](https://vuejs.org/) component simulates a typewriter effect by typing and erasing sentences with customizable typing speed, delay, caret style, and looping options. The component is built with the [Vue 3 Composition API](https://vuejs.org/guide/extras/composition-api-faq.html) and [TypeScript](https://www.typescriptlang.org/).
+This Vue component simulates a typewriter effect by typing and erasing sentences with customizable typing speed, delay, caret style, and looping options. The component is built with the [Vue 3 Composition API](https://vuejs.org/guide/extras/composition-api-faq.html) and [TypeScript](https://www.typescriptlang.org/).
 
 ## Demo Page
 [https://dmncodes.github.io/vue-typing/](https://dmncodes.github.io/vue-typing/)
