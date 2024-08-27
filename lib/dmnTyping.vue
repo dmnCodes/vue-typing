@@ -49,6 +49,7 @@ let erasingTimeout: ReturnType<typeof setTimeout>
 const caretClass = computed(() => ({
   caret: true,
   typing: typeStatus.value,
+  hide: !props.loop && !typeStatus.value
 }))
 
 // Helper function to start typing
@@ -174,6 +175,10 @@ watch(
 
 .dmn-typing .typing {
   animation: none;
+}
+
+.dmn-typing .hide {
+  display: none;
 }
 
 @keyframes blink {
