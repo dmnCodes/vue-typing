@@ -36,7 +36,6 @@ const props = withDefaults(
 
 const emit = defineEmits(['sentence:typed'])
 
-const key = ref(0)
 const typeValue = ref('')
 const count = ref(0)
 const typeStatus = ref(false)
@@ -145,19 +144,10 @@ onUnmounted(() => {
   clearTimers()
 })
 
-watch(
-  props,
-  () => {
-    clearTimers()
-    startTyping()
-    key.value++
-  },
-  { deep: true },
-)
 </script>
 
 <template>
-  <component :key="key" :is="tag" class="dmn-typing" data-id="dmn-typing">
+  <component :is="tag" class="dmn-typing" data-id="dmn-typing">
     <slot name="before" data-id="dmn-typing-before" />
     <span class="sentence" data-id="dmn-typing-sentence">{{ typeValue }}</span>
     <span :class="caretClass" data-id="dmn-typing-caret">{{
